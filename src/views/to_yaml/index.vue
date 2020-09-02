@@ -12,141 +12,148 @@
         <el-button style="margin-left: 10px;" type="primary">选择需要解析的YAML文件</el-button>
       </el-upload>
     </div>
+    <el-form :model="DataForm" :rules="rules">
+      <el-form-item prop="Desc">
+        <div>用例描述</div>
+        <el-input
+          v-model="DataForm.Desc"
+          style="width: 200px;"
+          class="filter-item"
+        />
+      </el-form-item>
 
-    <div class="case-title">
-      <el-input
-        v-model="Desc"
-        placeholder="用例描述" style="width: 200px;" class="filter-item"
-        :rules="rules"/>
-    </div>
-    <el-input v-model="tempPreCondition" placeholder="预制条件" style="width: 200px;" class="filter-item"
-              @keyup.enter.native=""/>
-    <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-check"
-               @click="addPreCondition()"/>
-    <el-table :data="PreCondition">
-      <el-table-column label="预制条件">
-        <template slot-scope="{row}">
-          <span>{{ row }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作">
-        <template slot-scope="{row}">
-          <el-button class="filter-item" style="margin-left: 10px;" type="warning" icon="el-icon-delete"
-                     @click="delPreCondition(row)"/>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div class="filter-container">
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="CreateTestPlant()">
-        新增测试计划内容
-      </el-button>
-      <el-table :data="TestPlant">
-        <el-table-column type="expand">
-          <template slot-scope="{ row }">
-            <el-table label-position="left" :data="row.CheckPoint.cases">
-              <el-table-column label="用例内容">
-                <template slot-scope="{row}">
-                  <span>{{ row.case.action }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="预期">
-                <template slot-scope="{row}">
-                  <span>{{ row.case.assert }}</span>
-                </template>
-              </el-table-column>
-            </el-table>
-          </template>
-        </el-table-column>
-        <el-table-column label="等级">
+      <el-input v-model="tempPreCondition" placeholder="预制条件" style="width: 200px;" class="filter-item"
+                @keyup.enter.native=""/>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-check"
+                 @click="addPreCondition()"/>
+      <el-table :data="DataForm.PreCondition">
+        <el-table-column label="预制条件">
           <template slot-scope="{row}">
-            <span>{{ row.CheckPoint.level }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="描述">
-          <template slot-scope="{row}">
-            <span>{{ row.CheckPoint.desc }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="元素名称">
-          <template slot-scope="{row}">
-            <span>{{ row.CheckPoint.element }}</span>
+            <span>{{ row }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="{row}">
             <el-button class="filter-item" style="margin-left: 10px;" type="warning" icon="el-icon-delete"
-                       @click="delTestPlant(row)"/>
+                       @click="delPreCondition(row)"/>
           </template>
         </el-table-column>
       </el-table>
-    </div>
-    <div>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="CreateLog()">
-        新增变更日志
-      </el-button>
-      <el-table :data="ChangeLog">
-        <el-table-column label="版本号">
-          <template slot-scope="{row}">
-            <span>{{ row.version }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="变更信息">
-          <template slot-scope="{row}">
-            <span>{{ row.message }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作">
-          <template slot-scope="{row}">
-            <el-button class="filter-item" style="margin-left: 10px;" type="warning" icon="el-icon-delete"
-                       @click="delChangeLog(row)"/>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-    <div>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="CreateStory()">
-        需求记录
-      </el-button>
-      <el-table :data="Story">
-        <el-table-column label="需求描述">
-          <template slot-scope="{row}">
-            <span>{{ row.name }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="需求连接">
-          <template slot-scope="{row}">
+      <div class="filter-container">
+        <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="CreateTestPlant()">
+          新增测试计划内容
+        </el-button>
+        <el-table :data="DataForm.TestPlant">
+          <el-table-column type="expand">
+            <template slot-scope="{ row }">
+              <el-table label-position="left" :data="row.CheckPoint.cases">
+                <el-table-column label="用例内容">
+                  <template slot-scope="{row}">
+                    <span>{{ row.case.action }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="预期">
+                  <template slot-scope="{row}">
+                    <span>{{ row.case.assert }}</span>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </template>
+          </el-table-column>
+          <el-table-column label="等级">
+            <template slot-scope="{row}">
+              <span>{{ row.CheckPoint.level }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="描述">
+            <template slot-scope="{row}">
+              <span>{{ row.CheckPoint.desc }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="元素名称">
+            <template slot-scope="{row}">
+              <span>{{ row.CheckPoint.element }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作">
+            <template slot-scope="{row}">
+              <el-button class="filter-item" style="margin-left: 10px;" type="warning" icon="el-icon-delete"
+                         @click="delTestPlant(row)"/>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div>
+        <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="CreateLog()">
+          新增变更日志
+        </el-button>
+        <el-table :data="DataForm.ChangeLog">
+          <el-table-column label="版本号">
+            <template slot-scope="{row}">
+              <span>{{ row.version }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="变更信息">
+            <template slot-scope="{row}">
+              <span>{{ row.message }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作">
+            <template slot-scope="{row}">
+              <el-button class="filter-item" style="margin-left: 10px;" type="warning" icon="el-icon-delete"
+                         @click="delChangeLog(row)"/>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div>
+        <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="CreateStory()">
+          需求记录
+        </el-button>
+        <el-table :data="DataForm.Story">
+          <el-table-column label="需求描述">
+            <template slot-scope="{row}">
+              <span>{{ row.name }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="需求连接">
+            <template slot-scope="{row}">
             <span>
               <a>{{ row.link }}</a>
             </span>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作">
-          <template slot-scope="{row}">
-            <el-button class="filter-item" style="margin-left: 10px;" type="warning" icon="el-icon-delete"
-                       @click="delStory(row)"/>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-    <div>
-      <el-input v-model="FileName" placeholder="用例文件名称" style="width: 200px;" class="filter-item"></el-input>
-      <el-button class="filter-item" style="margin-left: 10px;" type="warning" icon="el-icon-check"
-                 @click="createYaml()">生成YAML用例文件
-      </el-button>
-    </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作">
+            <template slot-scope="{row}">
+              <el-button class="filter-item" style="margin-left: 10px;" type="warning" icon="el-icon-delete"
+                         @click="delStory(row)"/>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div>
+        <el-form-item prop="FileName">
+          <el-aside>用例文件名称:</el-aside>
+          <el-input v-model="DataForm.FileName" style="width: 200px;" class="filter-item"></el-input>
+          <el-button class="filter-item" style="margin-left: 10px;" type="warning" icon="el-icon-check"
+                     @click="createYaml()">生成YAML用例文件
+          </el-button>
+        </el-form-item>
+      </div>
+    </el-form>
     <!--dialog-->
     <el-dialog title="Test Plant" :visible.sync="dialogTestPlant">
-      <el-form ref="form" :model="TempTestPlant" label-width="80px">
+      <el-form ref="form" :model="TempTestPlant" :rules="TestPlantRules" label-width="80px">
         <el-form-item label="等级">
-          <el-select v-model="TempTestPlant.CheckPoint.level" placeholder="请选择元素名称">
+          <el-select v-model="TempTestPlant.level" placeholder="请选择元素名称">
             <el-option v-for="(value,index) in levelList" :label="value" :value="value"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="用例描述">
-          <el-input v-model="TempTestPlant.CheckPoint.desc"></el-input>
+        <el-form-item label="用例描述" prop="desc">
+          <el-input v-model="TempTestPlant.desc"></el-input>
         </el-form-item>
-        <el-form-item label="元素名称">
-          <el-select v-model="TempTestPlant.CheckPoint.element" placeholder="请选择元素名称"
+        <el-form-item label="元素名称" prop="element">
+          <el-select v-model="TempTestPlant.element" placeholder="请选择元素名称"
                      @change="updateAttrList">
             <el-option v-for="(value,index) in elementList" :label="value.name" :value="value.value"></el-option>
           </el-select>
@@ -164,12 +171,12 @@
       </el-form>
     </el-dialog>
     <el-dialog title="Change Log" :visible.sync="dialogLog">
-      <el-form ref="form" :model="TempChangeLog" label-width="80px">
-        <el-form-item>
+      <el-form ref="form" :model="TempChangeLog" :rules="ChangeLogRules" label-width="80px">
+        <el-form-item prop="version">
           <a>请输入版本号</a>
           <el-input v-model="TempChangeLog.version"></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="message">
           <a>请输入版本变更记录内容</a>
           <el-input v-model="TempChangeLog.message"></el-input>
         </el-form-item>
@@ -180,12 +187,12 @@
       </el-button>
     </el-dialog>
     <el-dialog title="Story" :visible.sync="dialogStory">
-      <el-form ref="form" :model="TempStory" label-width="80px">
-        <el-form-item>
+      <el-form ref="form" :model="TempStory" :rules="StoryRules" label-width="80px">
+        <el-form-item prop="name">
           <a>请输入需求描述</a>
           <el-input v-model="TempStory.name"></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="link">
           <a>请输入需求链接</a>
           <el-input v-model="TempStory.link"></el-input>
         </el-form-item>
@@ -225,50 +232,65 @@ export default {
       dialogTestPlant: false,
       dialogLog: false,
       dialogStory: false,
-      FileName: undefined,
-      //用例描述
-      Desc: undefined,
-      tempPreCondition: undefined,
-      // 预置条件
-      PreCondition: [],
-      // 用例步骤列表
-      TestPlant: [],
-      // 用例步骤
-      TempTestPlant: {
-        CheckPoint: {
-          level: "P0",
-          desc: undefined,
-          element: undefined,
-          cases: []
-        }
+      DataForm: {
+        FileName: undefined,
+        //用例描述
+        Desc: undefined,
+        // 预置条件
+        PreCondition: [],
+        // 用例步骤列表
+        TestPlant: [],
+
+        // 变更日志
+        ChangeLog: [],
+        // 需求
+        Story: [],
+
+        // 相关模块
+        RelatedModule: [],
       },
-      // 变更日志
-      ChangeLog: [],
+      tempPreCondition: undefined,
+      TempTestPlant: {
+        level: "P0",
+        desc: undefined,
+        element: undefined,
+        cases: []
+      },
       TempChangeLog: {
         version: undefined,
         message: undefined
       },
-      // 需求
-      Story: [],
-      TempStory: {
-        name: undefined,
-        link: undefined
-      },
-      // 相关模块
-      RelatedModule: [],
       temp: {
         desc: undefined,
         level: "P0",
         case: undefined,
         action: undefined
       },
+      TempStory: {
+        name: undefined,
+        link: undefined
+      },
       levelList: ["P0", "P1", "P2", "P3"],
       elementList: [],
       cases: [],
       attrListSelect: {},
       rules: {
-        Desc: [{required: true, message: '请输入用例名称', trigger: 'blur'},]
+        Desc: [{required: true, message: '请输入用例描述', trigger: 'blur'}],
+        FileName: [{required: true, message: '请输入用例文件名称', trigger: 'blur'}]
+      },
+      TestPlantRules: {
+        desc: [{required: true, message: '请输入用例描述', trigger: 'blur'}],
+        element: [{required: true, message: '请选择元素', trigger: 'change'}]
+      },
+      ChangeLogRules: {
+        version: [{required: true, message: '请填写版本号', trigger: 'blur'}],
+        message: [{required: true, message: '请输入对应修改信息', trigger: 'blur'}]
+      },
+      StoryRules: {
+        name: [{required: true, message: '请出入需求名称', trigger: 'blur'}],
+        link: [{required: true, message: '请填写需求链接', trigger: 'blur'}]
       }
+
     }
   },
   methods: {
@@ -285,12 +307,12 @@ export default {
     // 预置条件操作
     addPreCondition() {
       if (this.tempPreCondition != null) {
-        this.PreCondition.push(this.tempPreCondition);
+        this.DataForm.PreCondition.push(this.tempPreCondition);
       }
       this.tempPreCondition = undefined;
     },
     delPreCondition(data) {
-      const listData = this.PreCondition;
+      const listData = this.DataForm.PreCondition;
       const pos = listData.indexOf(data);
       listData.splice(pos, 1);
     },
@@ -299,28 +321,37 @@ export default {
     },
     // 测试步骤操作
     saveTempTestPlant() {
-      this.TempTestPlant.CheckPoint.cases = this.cases;
-      this.cases = [];
-      this.TestPlant.push(this.TempTestPlant);
-      this.TempTestPlant = {
-        CheckPoint: {
-          level: "P0",
-          desc: undefined,
-          element: undefined,
-          cases: []
+      for (const caseIndex in this.cases) {
+        if (this.cases[caseIndex].case.assert === "") {
+          alert(this.cases[caseIndex].case.action + "没有填写具体内容")
+          return;
         }
+
+      }
+      this.TempTestPlant.cases = this.cases;
+      this.cases = [];
+      this.DataForm.TestPlant.push({CheckPoint: this.TempTestPlant});
+      this.TempTestPlant = {
+        level: "P0",
+        desc: undefined,
+        element: undefined,
+        cases: []
       };
       // 关闭dialog
       this.dialogTestPlant = false;
     },
     delTestPlant(data) {
-      const listData = this.TestPlant;
+      const listData = this.DataForm.TestPlant;
       const pos = listData.indexOf(data);
       listData.splice(pos, 1);
     },
     // 变成日志操作
     saveTempChangeLog() {
-      this.ChangeLog.push(this.TempChangeLog);
+      if (this.TempChangeLog.version === undefined || this.TempChangeLog.message === undefined) {
+        alert("请完成填写内容！")
+        return;
+      }
+      this.DataForm.ChangeLog.push(this.TempChangeLog);
       this.TempChangeLog = {
         version: undefined,
         message: undefined
@@ -328,13 +359,17 @@ export default {
       this.dialogLog = false;
     },
     delChangeLog(data) {
-      const listData = this.ChangeLog;
+      const listData = this.DataForm.ChangeLog;
       const pos = listData.indexOf(data);
       listData.splice(pos, 1);
     },
     // 变更需求操作
     saveStory() {
-      this.Story.push(this.TempStory)
+      if (this.TempStory.name === undefined || this.TempStory.link === undefined) {
+        alert("请完成填写内容！")
+        return;
+      }
+      this.DataForm.Story.push(this.TempStory)
       this.TempStory = {
         name: undefined,
         link: undefined
@@ -342,7 +377,7 @@ export default {
       this.dialogStory = false
     },
     delStory(data) {
-      const listData = this.Story;
+      const listData = this.DataForm.Story;
       const pos = listData.indexOf(data);
       listData.splice(pos, 1);
     },
@@ -364,24 +399,23 @@ export default {
         ints = ints.slice(0, 5000); //截取一段读取的内容
         let snippets = new TextDecoder('utf-8').decode(ints); //二进制缓存区内容转化成中文（即也就是读取到的内容）
         const YamlData = YAML.load(snippets)
-        this.Desc = YamlData.Desc;
-        this.Story = YamlData.Story;
-        this.ChangeLog = YamlData.ChangeLog;
-        this.TestPlant = YamlData.TestPlan;
-        this.PreCondition = YamlData.PreCondition;
+        this.DataForm.Desc = YamlData.Desc;
+        this.DataForm.Story = YamlData.Story;
+        this.DataForm.ChangeLog = YamlData.ChangeLog;
+        this.DataForm.TestPlant = YamlData.TestPlan;
+        this.DataForm.PreCondition = YamlData.PreCondition;
       }
 
       reader.onload = YamlParse.bind(this)
     },
     // 生成YAML文件
     createYaml() {
-      const result = {
-        Desc: this.Desc,
-        PreCondition: this.PreCondition,
-        TestPlan: this.TestPlant,
-        ChangeLog: this.ChangeLog,
-        Story: this.Story,
+      if (this.DataForm.Desc === undefined ||
+        this.DataForm.FileName === undefined) {
+        alert("用例描述或者用例文件名称未填写!")
+        return;
       }
+      const result = this.DataForm
       const YAML = require("js-yaml")
       const YamlResult = YAML.dump(result)
       //定义文件内容，类型必须为Blob 否则createObjectURL会报错

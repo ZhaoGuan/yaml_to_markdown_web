@@ -29,7 +29,7 @@
     <el-dialog title="属性管理" :visible.sync="dialogAttribute">
       <el-form ref="form" :model="TempAttribute" label-width="80px">
         <el-form-item>
-          <a>请输入需求描述</a>
+          <a>请输入要新增的属性内容</a>
           <div>
             <el-input v-model="TempAttribute.name"></el-input>
             <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-check"
@@ -57,8 +57,8 @@
       </el-table>
     </el-dialog>
     <el-dialog title="新增元素" :visible.sync="dialogElement">
-      <el-form ref="form" :model="TempElement" label-width="80px">
-        <el-form-item>
+      <el-form ref="form" :model="TempElement" :rules="ElementRules" label-width="80px">
+        <el-form-item prop="name">
           <a>新增元素名称</a>
           <div>
             <el-input v-model="TempElement.name"></el-input>
@@ -113,7 +113,10 @@ export default {
       },
       AttributeList: [],
       elementList: [],
-      multipleSelection: []
+      multipleSelection: [],
+      ElementRules: {
+        name: [{required: true, message: '请填写元素名称', trigger: 'blur'}]
+      }
     }
   }
   ,
@@ -139,7 +142,10 @@ export default {
       })
     },
     addNewAttribute(data) {
-      console.log(data)
+      if (data === undefined) {
+        alert("请输入属性内容！")
+        return;
+      }
       addAttribute({info: data}).then(response => {
         console.log(response)
       })
@@ -156,6 +162,15 @@ export default {
       this.multipleSelection = val;
     },
     CreateTheElement() {
+      console.log(this.multipleSelection)
+      if (this.TempElement.name === undefined) {
+        alert("没有填写元素名称!")
+        return;
+      }
+      if (this.multipleSelection.length === 0) {
+        alert("元素未选择属性!")
+        return;
+      }
       const postData = {
         name: this.TempElement.name,
         attribute_list: this.multipleSelection
