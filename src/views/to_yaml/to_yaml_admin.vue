@@ -1,9 +1,9 @@
 <template>
   <div>
-    <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="OpenElement()">
+    <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="OpenElement">
       新增元素
     </el-button>
-    <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="OpenAttribute()">
+    <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="OpenAttribute">
       管理属性
     </el-button>
     <el-table :data="elementList">
@@ -14,7 +14,7 @@
       </el-table-column>
       <el-table-column label="元素属性">
         <template slot-scope="{row}">
-          <div v-for="(value,index) in row.attribute_list">
+          <div v-for="(value) in row.attribute_list">
             <a>{{ value.info }}</a>
           </div>
         </template>
@@ -81,7 +81,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="CreateTheElement()">
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="CreateTheElement">
         保存元素
       </el-button>
     </el-dialog>

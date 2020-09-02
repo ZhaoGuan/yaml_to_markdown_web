@@ -40,7 +40,7 @@
         </el-table-column>
       </el-table>
       <div class="filter-container">
-        <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="CreateTestPlant()">
+        <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="CreateTestPlant">
           新增测试计划内容
         </el-button>
         <el-table :data="DataForm.TestPlant">
@@ -84,7 +84,7 @@
         </el-table>
       </div>
       <div>
-        <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="CreateLog()">
+        <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="CreateLog">
           新增变更日志
         </el-button>
         <el-table :data="DataForm.ChangeLog">
@@ -107,7 +107,7 @@
         </el-table>
       </div>
       <div>
-        <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="CreateStory()">
+        <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="CreateStory">
           需求记录
         </el-button>
         <el-table :data="DataForm.Story">
@@ -146,7 +146,7 @@
       <el-form ref="form" :model="TempTestPlant" :rules="TestPlantRules" label-width="80px">
         <el-form-item label="等级">
           <el-select v-model="TempTestPlant.level" placeholder="请选择元素名称">
-            <el-option v-for="(value,index) in levelList" :label="value" :value="value"></el-option>
+            <el-option v-for="(value) in levelList" :label="value" :value="value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="用例描述" prop="desc">
@@ -155,11 +155,11 @@
         <el-form-item label="元素名称" prop="element">
           <el-select v-model="TempTestPlant.element" placeholder="请选择元素名称"
                      @change="updateAttrList">
-            <el-option v-for="(value,index) in elementList" :label="value.name" :value="value.value"></el-option>
+            <el-option v-for="(value) in elementList" :label="value.name" :value="value.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="属性">
-          <div v-for="(input,index) in cases">
+          <div v-for="(input) in cases">
             <div>{{ input.case.action }}</div>
             <el-input v-model="input.case.assert"></el-input>
           </div>
@@ -213,15 +213,21 @@ export default {
     getAllElements().then(response => {
       const theData = response.data
       for (const index in theData) {
-        this.elementList.push({name: theData[index].name, value: theData[index].name})
-        this.attrListSelect[theData[index].name] = []
-        for (const index_ in theData[index].attribute_list) {
-          this.attrListSelect[theData[index].name].push({
-            case: {
-              action: theData[index].attribute_list[index_]["info"],
-              assert: ""
+        if (theData.hasOwnProperty(index)) {
+          this.elementList.push({name: theData[index].name, value: theData[index].name})
+          this.attrListSelect[theData[index].name] = []
+          for (const index_ in theData[index].attribute_list) {
+            if (theData[index].attribute_list.hasOwnProperty(index_)) {
+              this.attrListSelect[theData[index].name].push({
+                case: {
+                  action: theData[index].attribute_list[index_]["info"],
+                  assert: ""
+                }
+              })
             }
-          })
+
+          }
+
         }
       }
     })
@@ -322,11 +328,12 @@ export default {
     // 测试步骤操作
     saveTempTestPlant() {
       for (const caseIndex in this.cases) {
-        if (this.cases[caseIndex].case.assert === "") {
-          alert(this.cases[caseIndex].case.action + "没有填写具体内容")
-          return;
+        if (this.cases.hasOwnProperty(caseIndex)) {
+          if (this.cases[caseIndex].case.assert === "") {
+            alert(this.cases[caseIndex].case.action + "没有填写具体内容")
+            return;
+          }
         }
-
       }
       this.TempTestPlant.cases = this.cases;
       this.cases = [];
@@ -395,7 +402,7 @@ export default {
       //  reader.readAsText(file.raw, "gb2312");  //读.txt文件
       reader.readAsArrayBuffer(file.raw); //读任意文件
       function YamlParse(e) {
-        var ints = new Uint8Array(e.target.result); //要使用读取的内容，所以将读取内容转化成Uint8Array
+        let ints = new Uint8Array(e.target.result); //要使用读取的内容，所以将读取内容转化成Uint8Array
         ints = ints.slice(0, 5000); //截取一段读取的内容
         let snippets = new TextDecoder('utf-8').decode(ints); //二进制缓存区内容转化成中文（即也就是读取到的内容）
         const YamlData = YAML.load(snippets)
@@ -427,7 +434,7 @@ export default {
       let el = document.createElement('a')
       //链接赋值
       el.href = url
-      el.download = this.FileName + ".yml"
+      el.download = this.DataForm.FileName + ".yml"
       //必须点击否则不会下载
       el.click()
       //移除链接释放资源
