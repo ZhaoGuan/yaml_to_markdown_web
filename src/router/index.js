@@ -50,8 +50,8 @@ export const constantRoutes = [
       {
         path: 'to-yaml',
         component: () => import('@/views/to_yaml/index'),
-        name: 'Json to Yaml',
-        meta: { title: 'Json to Yaml', icon: 'form', affix: true }
+        name: 'To Yaml',
+        meta: {title: 'To Yaml', icon: 'form', affix: true}
       }
     ]
   },
@@ -60,10 +60,10 @@ export const constantRoutes = [
     component: Layout,
     children: [
       {
-        path: 'to-yaml-admin',
+        path: '/to-yaml-admin',
         component: () => import('@/views/to_yaml/to_yaml_admin'),
-        name: 'to-yaml-admin',
-        meta: { title: 'to_yaml_admin', icon: 'table', affix: true }
+        name: 'To Yaml Admin',
+        meta: {title: 'To Yaml Admin', icon: 'table', affix: true}
       }
     ]
   },
@@ -185,16 +185,27 @@ export const constantRoutes = [
   // },
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  {path: '*', redirect: '/404', hidden: true}
 ]
-
+export const asyncRoutes = [{
+  path: '/to-yaml-admin',
+  component: Layout,
+  meta: {role: ['admin']},
+  children: [
+    {
+      path: '/to-yaml-admin',
+      component: () => import('@/views/to_yaml/to_yaml_admin'),
+      name: 'To Yaml Admin',
+      meta: {title: 'To Yaml Admin', icon: 'table', affix: true}
+    }
+  ]
+},]
 const createRouter = () => new Router({
   // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior: () => ({y: 0}),
   routes: constantRoutes
 })
 
-const router = createRouter()
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {

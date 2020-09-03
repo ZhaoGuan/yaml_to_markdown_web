@@ -1,6 +1,7 @@
 import request from '@/utils/request'
 
-const host = "http://" + window.location.host
+// const host = "http://" + window.location.host
+const host = "http://0.0.0.0:8000"
 
 export function addAttribute(data) {
   return request({
